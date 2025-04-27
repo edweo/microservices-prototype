@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: notes-service
+  cloud:
+    config:
+      fail-fast: true
+  config:
+    import: configserver:http://localhost:7777
+  profiles:
+    active: dev
