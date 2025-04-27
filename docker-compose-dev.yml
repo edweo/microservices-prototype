@@ -1,0 +1,89 @@
+version: "3.9"
+
+services:
+  notes-db-DEV:
+    container_name: notes-db-DEV
+    image: postgres:latest
+    restart: always
+    ports:
+      - "4545:5432"
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: notes-db
+    volumes:
+      - notes-db-DEV:/var/lib/postgresql/data
+
+  flashcards-db-DEV:
+    container_name: flashcards-db-DEV
+    image: postgres:latest
+    restart: always
+    ports:
+      - "6655:5432"
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: flashcards-db
+    volumes:
+      - flashcards-db-DEV:/var/lib/postgresql/data
+
+  keycloak-DEV:
+    container_name: keycloak-DEV
+    image: quay.io/keycloak/keycloak:latest
+    restart: always
+    ports:
+      - "7474:8080"
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://keycloak-db-DEV/keycloak-db
+      - KC_DB_USERNAME=keycloak-user
+      - KC_DB_PASSWORD=keycloak-password
+    command: "start-dev --import-realm"
+    volumes:
+      - ./keycloak_imports:/opt/keycloak/data/import
+    depends_on:
+      - keycloak-db-DEV
+    networks:
+      - keycloak-network
+
+  keycloak-db-DEV:
+    container_name: keycloak-db-DEV
+    image: postgres:latest
+    restart: always
+    ports:
+      - "7475:5432"
+    environment:
+      POSTGRES_USER: keycloak-user
+      POSTGRES_PASSWORD: keycloak-password
+      POSTGRES_DB: keycloak-db
+    volumes:
+      - keycloak-db-DEV:/var/lib/postgresql/data
+    networks:
+      - keycloak-network
+
+  session-db-DEV:
+    container_name: session-db-DEV
+    image: postgres:latest
+    restart: always
+    ports:
+      - "7766:5432"
+    environment:
+      POSTGRES_USER: session-user
+      POSTGRES_PASSWORD: session-password
+      POSTGRES_DB: session-db
+    volumes:
+      - session-db-DEV:/var/lib/postgresql/data
+    networks:
+      - auth-network
+
+networks:
+  keycloak-network:
+  auth-network:
+
+volumes:
+  notes-db-DEV:
+  flashcards-db-DEV:
+  keycloak-db-DEV:
+  session-db-DEV:

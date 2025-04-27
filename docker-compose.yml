@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  # Frontend
+  spa-webber:
+    container_name: spa-webber
+    image: spa-webber
+    build:
+      context: ./spa-webber
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - webber-frontend
+
+  # Backend
+  config-server:
+    container_name: config-server
+    image: config-server:1.0
+    restart: always
+    environment:
+      - "SPRING_PROFILES_ACTIVE=native,prod"
+    networks:
+      - webber-backend
+
+  api-gateway:
+    container_name: api-gateway
+    image: api-gateway:1.0
+    restart: always
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+    networks:
+      - webber-backend
+    ports:
+      - "8080:80"
+    depends_on:
+      - config-server
+
+  notes-service:
+    container_name: notes-service
+    image: notes-service:1.0
+    restart: always
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+    networks:
+      - webber-backend
+    depends_on:
+      - config-server
+
+networks:
+  webber-frontend:
+    driver: bridge
+  webber-backend:
+    driver: bridge
