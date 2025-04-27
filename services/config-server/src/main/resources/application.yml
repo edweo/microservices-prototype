@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: config-server
+  main:
+    banner-mode: off
+  threads:
+    virtual:
+      enabled: true
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:configs,classpath:configs/{application}
+  profiles:
+    active: native,dev
+
+server:
+  port: 7777

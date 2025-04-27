@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:7766/session-db
+    username: session-user
+    password: session-password
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc: DEBUG

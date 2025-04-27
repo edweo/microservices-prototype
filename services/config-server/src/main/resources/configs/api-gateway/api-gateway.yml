@@ -1,0 +1,35 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: notes-service
+          uri: ${services.notes-service}
+          predicates:
+            - Path=/notes/**
+        - id: flashcards-service
+          uri: ${services.flashcards-service}
+          predicates:
+            - Path=/flashcards/**
+
+#        // Auth service
+        - id: auth-service-login
+          uri: ${services.auth-service}
+          predicates:
+            - Path=/auth/login
+          filters:
+            - StripPrefix=1
+        - id: auth-service-register
+          uri: ${services.auth-service}
+          predicates:
+            - Path=/auth/register
+          filters:
+            - StripPrefix=1
+        - id: auth-service-logout
+          uri: ${services.auth-service}
+          predicates:
+            - Path=/auth/logout
+          filters:
+            - StripPrefix=1
+
+server:
+  port: 8080

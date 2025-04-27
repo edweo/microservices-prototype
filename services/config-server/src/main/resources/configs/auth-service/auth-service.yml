@@ -1,0 +1,19 @@
+server:
+  port: 4344
+  servlet:
+    session:
+      cookie:
+        same-site: strict
+        http-only: true
+        secure: true
+
+data:
+  jdbc:
+    dialect: postgresql
+
+values:
+  keycloak-realm: webber
+  client-id: webber
+  client-id-secret: lSLocXdpcNrW524FfqqnejapFTDzNTF5
+  client-id-admin: webber-admin
+  client-id-admin-secret: 5cyeh6T7Y7c5fmlqT1W7M0haXHNPJh28

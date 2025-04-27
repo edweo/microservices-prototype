@@ -1,0 +1,14 @@
+spring:
+  main:
+    banner-mode: off
+  threads:
+    virtual:
+      enabled: true
+
+services:
+  auth-service: http://localhost:4344
+  keycloak-service: http://localhost:7474
+
+  # Microservices
+  notes-service: http://localhost:5555
+  flashcards-service: http://localhost:5566

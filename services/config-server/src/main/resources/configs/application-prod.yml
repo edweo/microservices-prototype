@@ -1,0 +1,6 @@
+server:
+  port: 80
+
+services:
+  notes-service: http://notes-service
+  auth-service: http://auth-service
